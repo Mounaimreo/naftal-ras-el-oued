@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="110" fill="#08264D" />
+  <circle cx="256" cy="256" r="185" fill="none" stroke="#F5D32E" stroke-width="18" stroke-dasharray="14 10" />
+  <!-- Drop / Flame center -->
+  <path d="M256 120 C230 190 170 230 170 300 C170 348 208 386 256 386 C304 386 342 348 342 300 C342 230 282 190 256 120 Z" fill="#F5D32E" />
+  <circle cx="256" cy="310" r="35" fill="#08264D" />
+  <!-- Clock hands inside -->
+  <line x1="256" y1="310" x2="256" y2="290" stroke="#F5D32E" stroke-width="6" stroke-linecap="round" />
+  <line x1="256" y1="310" x2="274" y2="310" stroke="#F5D32E" stroke-width="6" stroke-linecap="round" />
+  <!-- 4 shift indicators -->
+  <circle cx="256" cy="95" r="14" fill="#E4B420" />
+  <circle cx="417" cy="256" r="14" fill="#5688D7" />
+  <circle cx="256" cy="417" r="14" fill="#4F55AA" />
+  <circle cx="95" cy="256" r="14" fill="#45A687" />
+</svg>

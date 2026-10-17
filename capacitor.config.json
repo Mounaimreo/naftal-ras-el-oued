@@ -1,0 +1,7 @@
+{
+  "appId": "com.naftal.station",
+  "appName": "فضاء محطة نفطال رأس الوادي",
+  "webDir": "dist",
+  "bundledWebRuntime": false,
+  "server": { "androidScheme": "https" }
+}

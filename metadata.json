@@ -1,0 +1,6 @@
+{
+  "name": "فضاء محطة نفطال رأس الوادي",
+  "description": "تطبيق أندرويد متكامل لإدارة فريق وعمال محطة نفطال رأس الوادي وتنسيق المناوبات الدورية وجدول الورديات مع أداة تحكم احترافية.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
