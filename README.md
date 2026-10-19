@@ -6,14 +6,17 @@
 
 - Node.js 24.12 أو أحدث وnpm.
 - لتجميع Android محليًا: JDK 21، Android SDK Platform 34 وBuild Tools متوافقة.
-- إعداد Firebase صالح لتسجيل الدخول عبر Facebook.
+- إعداد Firebase صالح لتسجيل الدخول عبر رابط البريد، مع Facebook كطريقة احتياطية.
 
 ## إعداد Firebase
 
-1. انسخ `.env.example` إلى `.env`.
-2. أدخل إعدادات تطبيق Firebase Web في متغيرات `VITE_FIREBASE_*`، وبريد أو UID المسؤول في المتغيرات المخصصة لذلك.
-3. فعّل Facebook ضمن Firebase Authentication، وأضف نطاق النشر الفعلي في قائمة Authorized domains لدى Firebase.
-4. لا ترفع `.env` إلى Git أو تشاركه. لا يتضمن أرشيف المصدر المرفق ملف البيئة.
+1. انسخ `.env.example` إلى `.env` وأدخل إعدادات تطبيق Firebase Web وبريد المسؤول.
+2. في Firebase Authentication فعّل **Email/Password** و**Email link (passwordless sign-in)**؛ تفعيل Email/Password مطلوب كي يعمل رابط البريد. أبقِ Facebook مفعّلًا كطريقة احتياطية.
+3. أضف نطاق HTTPS الذي يستضيف تطبيق الويب إلى **Authorized domains**. يمكن ضبط `VITE_FIREBASE_EMAIL_LINK_URL` عند الحاجة إلى عنوان متابعة ثابت، ويجب أن يكون نطاقه مصرحًا به.
+4. للروابط التي تفتح APK، أضف تطبيق Android بالحزمة `com.naftal.station` إلى إعدادات Firebase وسجّل SHA-1 وSHA-256 لشهادة APK المستخدمة. يقرأ Gradle نطاق رابط Firebase من `VITE_FIREBASE_LINK_DOMAIN` إن ضُبط، وإلا من `VITE_FIREBASE_AUTH_DOMAIN`، ثم يضيف مرشح Android App Links للمسار `/__/auth/links`.
+5. روابط Firebase Dynamic Links القديمة متوقفة منذ 25 أغسطس 2025. استخدم نطاق Firebase Hosting الافتراضي للمشروع أو نطاق Hosting مخصصًا، وتأكد من إعداد `mobileLinksConfig.domain` في مشروع Firebase حسب دليل الترحيل الرسمي إذا لم يكن مضبوطًا.
+6. بعد أول دخول للمسؤول على Android، يعرض التطبيق خيار تفعيل البصمة. القفل البيومتري محلي على الجهاز؛ Android هو الذي يتحقق من البصمة، ولا يرسل التطبيق بياناتها إلى Firebase. هذا القفل لا يغني عن حماية Firebase أو قواعد خادم عند إضافة بيانات مشتركة مستقبلًا.
+7. لا ترفع `.env` إلى Git أو تشاركه. لا يتضمن أرشيف المصدر المرفق ملف البيئة.
 
 ## تشغيل وفحص تطبيق الويب
 
@@ -54,6 +57,7 @@ cd android
 
 ## ملاحظات تشغيلية
 
-- البناء يضمّن إعدادات Firebase للعميل، لذلك يجب ضبط Authorized domains وسياسات Firebase قبل الاستخدام الفعلي.
-- اختبر تسجيل الدخول عبر Facebook على نطاق النشر الفعلي وعلى جهاز Android المستهدف قبل اعتماد التطبيق في العمل اليومي.
+- إعداد Firebase للعميل يُضمّن في حزمة التطبيق؛ لا تضع مفاتيح خدمة أو أسرار Admin SDK في تطبيق العميل.
+- قبل اعتماد رابط البريد على APK، اختبر فتح الرابط من البريد على Android الحقيقي بعد ضبط SHA-1/SHA-256 ونطاق Firebase Hosting والتحقق من App Links.
+- عند تعذر البصمة أو تغييرها، يمكن للمسؤول الخروج وإعادة التحقق عبر رابط البريد؛ يظل Facebook طريقة احتياطية.
 - يحتفظ التطبيق ببيانات الجداول محليًا على الجهاز؛ احفظ نسخة احتياطية عند الحاجة ولا تعتبره نظام مزامنة مركزيًا.

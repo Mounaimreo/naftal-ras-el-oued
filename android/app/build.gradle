@@ -1,10 +1,37 @@
 apply plugin: 'com.android.application'
 
+// Use the same Firebase Hosting link domain as the web client configuration.
+def firebaseProperties = new Properties()
+def firebaseEnvFile = file("${rootDir}/../.env")
+if (firebaseEnvFile.exists()) {
+    firebaseEnvFile.eachLine { rawLine ->
+        def line = rawLine.trim()
+        if (line && !line.startsWith('#')) {
+            int separator = line.indexOf('=')
+            if (separator > 0) {
+                def key = line.substring(0, separator).trim()
+                def value = line.substring(separator + 1).trim()
+                if ((value.startsWith('"') && value.endsWith('"')) || (value.startsWith("'") && value.endsWith("'"))) {
+                    value = value.substring(1, value.length() - 1)
+                }
+                firebaseProperties.setProperty(key, value)
+            }
+        }
+    }
+}
+def firebaseAuthLinkHost = System.getenv('VITE_FIREBASE_LINK_DOMAIN')
+    ?: firebaseProperties.getProperty('VITE_FIREBASE_LINK_DOMAIN')
+    ?: System.getenv('VITE_FIREBASE_AUTH_DOMAIN')
+    ?: firebaseProperties.getProperty('VITE_FIREBASE_AUTH_DOMAIN')
+    ?: 'your-project.firebaseapp.com'
+firebaseAuthLinkHost = firebaseAuthLinkHost.replaceFirst('^https?://', '').split('/')[0]
+
 android {
     namespace = "com.naftal.station"
     compileSdk = rootProject.ext.compileSdkVersion
     defaultConfig {
         applicationId "com.naftal.station"
+        manifestPlaceholders = [firebaseAuthLinkHost: firebaseAuthLinkHost]
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
